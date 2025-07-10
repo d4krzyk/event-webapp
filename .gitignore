@@ -1,0 +1,29 @@
+# Pliki systemowe
+.DS_Store
+Thumbs.db
+
+# Pliki konfiguracyjne IDE
+/.idea/
+/*.iml
+
+# Pliki środowiskowe
+.env.test.local
+.env.dev.local
+.env.prod.local
+.env.*
+/compose*.bak
+
+
+# Pliki użytkownika
+*.swp
+*.swo
+
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###

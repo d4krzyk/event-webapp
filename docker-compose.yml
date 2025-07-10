@@ -1,0 +1,27 @@
+version: "3.8"
+services:
+  php:
+    build:
+      context: ./docker/php
+    volumes:
+      - .:/var/www/html
+    working_dir: /var/www/html
+    depends_on:
+      - db
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: wtw-db
+      POSTGRES_USER: user123
+      POSTGRES_PASSWORD: haslo123
+    ports:
+      - "5432:5432"
