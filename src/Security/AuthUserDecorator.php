@@ -19,6 +19,14 @@ class AuthUserDecorator implements UserInterface, PasswordAuthenticatedUserInter
     {
         return $this->user;
     }
+    public function getEmail(): ?string
+    {
+        return $this->user->getEmail();
+    }
+    public function getUsername(): ?string
+    {
+        return $this->user->getUsername();
+    }
     public function getRoles(): array
     {
         return array_unique(array_merge($this->user->getRoles(), ['ROLE_AUTH_USER']));

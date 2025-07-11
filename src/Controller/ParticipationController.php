@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Participation;
+use App\Entity\Reminder;
 use App\Form\ParticipationType;
 use App\Repository\ParticipationRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -122,6 +123,19 @@ final class ParticipationController extends AbstractController
         $participation->setJoinedAt(new \DateTimeImmutable());
 
         $em->persist($participation);
+
+
+
+        // Dodaj przypomnienie
+        $reminder = new Reminder();
+        $reminder->setRecipient($user);
+        $reminder->setEvent($event);
+        // Możesz ustawić sentAt na null, bo mail jeszcze nie został wysłany
+        $reminder->setRemindAt(new \DateTimeImmutable()); // <-- ustaw datę przypomnienia
+        $reminder->setSent(false);
+
+        $em->persist($reminder);
+
         $em->flush();
 
         $this->addFlash('success', 'Dołączono do wydarzenia!');
