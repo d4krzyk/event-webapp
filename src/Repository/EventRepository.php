@@ -39,6 +39,30 @@ class EventRepository extends ServiceEntityRepository
             $qb->andWhere('e.endDate <= :endDate')
                 ->setParameter('endDate', $filters['endDate']);
         }
+        if (!empty($filters['status'])) {
+            $now = new \DateTimeImmutable();
+            if ($filters['status'] === 'ongoing') {
+                $qb->andWhere('e.startDate <= :now AND e.endDate >= :now')
+                    ->setParameter('now', $now);
+            } elseif ($filters['status'] === 'upcoming') {
+                $qb->andWhere('e.startDate > :now')
+                    ->setParameter('now', $now);
+            } elseif ($filters['status'] === 'finished') {
+                $qb->andWhere('e.endDate < :now')
+                    ->setParameter('now', $now);
+            }
+        }
+
+        if (!empty($filters['sortBy']) && $filters['sortBy'] === 'popularity') {
+            $qb->leftJoin('e.participations', 'p')
+                ->addSelect('COUNT(p.id) AS HIDDEN popularity')
+                ->groupBy('e.id');
+            $qb->orderBy('popularity', $filters['sortOrder'] ?? 'DESC');
+        } elseif (!empty($filters['sortBy'])) {
+            $qb->orderBy('e.' . $filters['sortBy'], $filters['sortOrder'] ?? 'ASC');
+        } else {
+            $qb->orderBy('e.startDate', 'ASC');
+        }
         return $qb->getQuery()->getResult();
     }
     //    /**

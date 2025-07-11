@@ -74,6 +74,19 @@
                                     }
                                 }) }}
                             </div>
+                            <div class="col-md-2">
+                                {{ form_row(filterForm.status, {
+                                    'attr': {
+                                        'class': 'form-select'
+                                    }
+                                }) }}
+                            </div>
+                            <div class="col-md-2">
+                                {{ form_row(filterForm.sortBy, {'attr': {'class': 'form-select'}}) }}
+                            </div>
+                            <div class="col-md-2">
+                                {{ form_row(filterForm.sortOrder, {'attr': {'class': 'form-select'}}) }}
+                            </div>
                             <div class="col-md-1 d-grid">
                                 <button class="btn btn-primary">Szukaj</button>
                             </div>

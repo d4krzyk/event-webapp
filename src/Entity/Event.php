@@ -41,15 +41,15 @@ class Event
         }
     }
 
-    #[ORM\ManyToOne(inversedBy: 'events')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'events')]
+    #[ORM\JoinColumn(name: 'created_by_user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?User $createdByUser = null;
 
     #[ORM\ManyToOne(inversedBy: 'events')]
     private ?Location $location = null;
 
     #[ORM\ManyToOne(inversedBy: 'events')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private ?Category $category = null;
 
     /**

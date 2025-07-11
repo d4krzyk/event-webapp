@@ -70,7 +70,7 @@ final class CategoryController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_category_delete', methods: ['POST'])]
+    #[Route('/{id}/delete', name: 'app_category_delete', methods: ['GET','POST'])]
     public function delete(Request $request, Category $category, EntityManagerInterface $entityManager): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');

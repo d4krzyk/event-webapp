@@ -17,9 +17,11 @@ class Participation
     private ?\DateTimeImmutable $joinedAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'participations')]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private ?User $participant = null;
 
-    #[ORM\ManyToOne(inversedBy: 'participations')]
+    #[ORM\ManyToOne(targetEntity: Event::class, inversedBy: 'participations')]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Event $event = null;
 
     public function getId(): ?int

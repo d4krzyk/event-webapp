@@ -79,9 +79,6 @@ final class LocationController extends AbstractController
     public function delete(Request $request, Location $location, EntityManagerInterface $entityManager): Response
     {
         $this->denyAccessUnlessGranted('ROLE_AUTH_USER');
-        if ($location->getCreatedByUser() !== $this->getUser()) {
-            throw $this->createAccessDeniedException('Możesz usuwać tylko własne lokalizacje.');
-        }
         if ($this->isCsrfTokenValid('delete'.$location->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($location);
             $entityManager->flush();

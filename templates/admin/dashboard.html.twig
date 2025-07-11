@@ -27,7 +27,8 @@
                                 <td>{{ category.name }}</td>
                                 <td>
                                     <a href="{{ path('app_category_edit', {'id': category.id}) }}" class="btn btn-primary btn-sm me-1">Edytuj</a>
-                                    <form method="post" action="{{ path('app_category_delete', {'id': category.id}) }}" class="d-inline" onsubmit="return confirm('Na pewno usunąć?');">
+                                    <form method="post" action="{{ path('app_category_delete', {'id': category.id}) }}" class="d-inline"
+                                          onsubmit="return confirm('Usunięcie kategorii spowoduje także usunięcie wszystkich powiązanych wydarzeń. Czy na pewno chcesz kontynuować?');">
                                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ category.id) }}">
                                         <button type="submit" class="btn btn-danger btn-sm">Usuń</button>
                                     </form>
@@ -60,7 +61,8 @@
                                 <td>{{ location.address }}</td>
                                 <td>
                                     <a href="{{ path('app_location_edit', {'id': location.id}) }}" class="btn btn-primary btn-sm me-1">Edytuj</a>
-                                    <form method="post" action="{{ path('app_location_delete', {'id': location.id}) }}" class="d-inline" onsubmit="return confirm('Na pewno usunąć lokalizację?');">
+                                    <form method="post" action="{{ path('app_location_delete', {'id': location.id}) }}" class="d-inline"
+                                          onsubmit="return confirm('Usunięcie lokalizacji spowoduje także usunięcie wszystkich powiązanych wydarzeń. Czy na pewno chcesz kontynuować?');">
                                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ location.id) }}">
                                         <button type="submit" class="btn btn-danger btn-sm">Usuń</button>
                                     </form>
@@ -91,7 +93,8 @@
                                 <td>{{ event.startDate ? event.startDate|date('d-m-Y H:i') : '' }}</td>
                                 <td>
                                     <a href="{{ path('app_event_edit', {'id': event.id}) }}" class="btn btn-primary btn-sm me-1">Edytuj</a>
-                                    <form method="post" action="{{ path('app_event_delete', {'id': event.id}) }}" class="d-inline" onsubmit="return confirm('Na pewno usunąć to wydarzenie?');">
+                                    <form method="post" action="{{ path('app_event_delete', {'id': event.id}) }}" class="d-inline"
+                                          onsubmit="return confirm('Usunięcie wydarzenia spowoduje także usunięcie wszystkich powiązanych uczestnictw. Czy na pewno chcesz kontynuować?');">
                                         <input type="hidden" name="_token" value="{{ csrf_token('delete_event' ~ event.id) }}">
                                         <button class="btn btn-danger btn-sm">Usuń</button>
                                     </form>
@@ -108,6 +111,7 @@
                         <thead class="table-light">
                         <tr>
                             <th>ID</th>
+                            <th>Nazwa użytkownika</th>
                             <th>Email</th>
                             <th>Role</th>
                             <th>Akcje</th>
@@ -117,18 +121,20 @@
                         {% for user in users %}
                             <tr>
                                 <td>{{ user.id }}</td>
+                                <td>{{ user.username }}</td>
                                 <td>{{ user.email }}</td>
                                 <td>{{ user.roles|join(', ') }}</td>
                                 <td>
                                     <a href="{{ path('admin_user_edit', {'id': user.id}) }}" class="btn btn-primary btn-sm me-1">Edytuj</a>
-                                    <form method="post" action="{{ path('admin_user_delete', {'id': user.id}) }}" class="d-inline" onsubmit="return confirm('Na pewno usunąć?');">
+                                    <form method="post" action="{{ path('admin_user_delete', {'id': user.id}) }}" class="d-inline"
+                                          onsubmit="return confirm('Usunięcie użytkownika spowoduje także usunięcie wszystkich jego wydarzeń i uczestnictw. Czy na pewno chcesz kontynuować?');">
                                         <input type="hidden" name="_token" value="{{ csrf_token('delete_user' ~ user.id) }}">
                                         <button type="submit" class="btn btn-danger btn-sm">Usuń</button>
                                     </form>
                                 </td>
                             </tr>
                         {% else %}
-                            <tr><td colspan="4" class="text-center">Brak użytkowników.</td></tr>
+                            <tr><td colspan="5" class="text-center">Brak użytkowników.</td></tr>
                         {% endfor %}
                         </tbody>
                     </table>

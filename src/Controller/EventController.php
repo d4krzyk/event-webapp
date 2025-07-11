@@ -88,7 +88,7 @@ final class EventController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_event_delete', methods: ['POST'])]
+    #[Route('/{id}/delete', name: 'app_event_delete', methods: ['GET','POST'])]
     public function delete(Request $request, Event $event, EntityManagerInterface $entityManager): Response
     {
         $currentUser = $this->getUser();
@@ -96,13 +96,15 @@ final class EventController extends AbstractController
             $currentUser = $currentUser->getUser();
         }
         if (!$this->isGranted('ROLE_ADMIN') && $event->getCreatedByUser()?->getId() !== $currentUser?->getId()) {
-            throw $this->createAccessDeniedException('Możesz edytować tylko własne wydarzenia.');
+            throw $this->createAccessDeniedException('Możesz usuwać tylko własne wydarzenia.');
+        }
+        $submittedToken = $request->request->get('_token');
+        if (!$this->isCsrfTokenValid('delete_event' . $event->getId(), $submittedToken)) {
+            throw $this->createAccessDeniedException('Nieprawidłowy token CSRF.');
         }
 
-        if ($this->isCsrfTokenValid('delete'.$event->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($event);
-            $entityManager->flush();
-        }
+        $entityManager->remove($event);
+        $entityManager->flush();
 
         return $this->redirectToRoute('app_event_index', [], Response::HTTP_SEE_OTHER);
     }

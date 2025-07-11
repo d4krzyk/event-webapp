@@ -1,11 +1,15 @@
-<h1>Hi! Please confirm your email!</h1>
-
-<p>
-    Please confirm your email address by clicking the following link: <br><br>
-    <a href="{{ signedUrl|raw }}">Confirm my Email</a>.
-    This link will expire in {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}.
-</p>
-
-<p>
-    Cheers!
-</p>
+{% block body %}
+    <div style="max-width: 480px; margin: 40px auto; padding: 32px 24px; background: #f8f9fa; border-radius: 12px; font-family: Arial, sans-serif; color: #222;">
+        <h2 style="color: #0d6efd; margin-bottom: 16px;">Witaj, {{ user.username }}!</h2>
+        <p style="font-size: 1.1em;">Dziękujemy za rejestrację w serwisie <strong>Event WebApp</strong>.</p>
+        <p style="margin: 24px 0 16px 0;">Aby aktywować konto, kliknij poniższy przycisk:</p>
+        <p style="text-align: center; margin: 24px 0;">
+            <a href="{{ signedUrl }}" style="background: #198754; color: #fff; text-decoration: none; padding: 12px 28px; border-radius: 6px; font-weight: bold; font-size: 1.1em; display: inline-block;">
+                Potwierdź e-mail
+            </a>
+        </p>
+        <p style="font-size: 0.95em; color: #555;">Link wygaśnie: <strong>{{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}</strong></p>
+        <hr style="margin: 32px 0 16px 0; border: none; border-top: 1px solid #ddd;">
+        <p style="font-size: 0.9em; color: #888;">Jeśli nie rejestrowałeś się w naszym serwisie, zignoruj tę wiadomość.</p>
+    </div>
+{% endblock %}

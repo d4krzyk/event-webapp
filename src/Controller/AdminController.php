@@ -105,30 +105,7 @@ class AdminController extends AbstractController
             'event' => $event,
         ]);
     }
-    #[Route('/admin/event/{id}/delete', name: 'admin_event_delete', methods: ['POST'])]
-    public function deleteEvent(
-        int $id,
-        EventRepository $eventRepo,
-        Request $request,
-        EntityManagerInterface $em,
-        CsrfTokenManagerInterface $csrfTokenManager
-    ): RedirectResponse {
-        $event = $eventRepo->find($id);
-        if (!$event) {
-            throw $this->createNotFoundException('Wydarzenie nie istnieje.');
-        }
 
-        $submittedToken = $request->request->get('_token');
-        if (!$csrfTokenManager->isTokenValid(new \Symfony\Component\Security\Csrf\CsrfToken('delete_event' . $event->getId(), $submittedToken))) {
-            throw $this->createAccessDeniedException('Nieprawidłowy token CSRF.');
-        }
-
-        $em->remove($event);
-        $em->flush();
-
-        $this->addFlash('success', 'Wydarzenie usunięte.');
-        return $this->redirectToRoute('admin_dashboard');
-    }
 
 
 
