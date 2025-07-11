@@ -1,11 +1,25 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Event{% endblock %}
+{% block title %}Nowe wydarzenie{% endblock %}
 
 {% block body %}
-    <h1>Create new Event</h1>
+<div class="my-5">
+        <div class="card-body">
+            {{ include('event/_form.html.twig') }}
 
-    {{ include('event/_form.html.twig') }}
-
-    <a href="{{ path('app_event_index') }}">back to list</a>
+            <div class="mb-3 d-flex gap-2 justify-content-center">
+                <a href="{{ path('app_location_new') }}" class="btn btn-success">
+                    Stwórz nową lokalizację
+                </a>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a href="{{ path('admin_dashboard') }}" class="btn btn-warning">
+                        Powrót do panelu administratora
+                    </a>
+                {% endif %}
+                <a href="{{ path('app_event_index') }}" class="btn btn-secondary">
+                    Powrót do listy wydarzeń
+                </a>
+            </div>
+        </div>
+</div>
 {% endblock %}

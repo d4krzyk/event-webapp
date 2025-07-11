@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: EventRepository::class)]
 class Event
@@ -23,10 +24,22 @@ class Event
     private ?string $description = null;
 
     #[ORM\Column]
+    #[Assert\NotNull]
     private ?\DateTimeImmutable $startDate = null;
 
     #[ORM\Column]
+    #[Assert\NotNull]
     private ?\DateTimeImmutable $endDate = null;
+
+    #[Assert\Callback]
+    public function validateDates(\Symfony\Component\Validator\Context\ExecutionContextInterface $context): void
+    {
+        if ($this->startDate && $this->endDate && $this->startDate > $this->endDate) {
+            $context->buildViolation('Data rozpoczęcia nie może być późniejsza niż data zakończenia.')
+                ->atPath('startDate')
+                ->addViolation();
+        }
+    }
 
     #[ORM\ManyToOne(inversedBy: 'events')]
     #[ORM\JoinColumn(nullable: false)]

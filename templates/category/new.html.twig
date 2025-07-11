@@ -1,11 +1,19 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Category{% endblock %}
+{% block title %}Nowa kategoria{% endblock %}
 
 {% block body %}
-    <h1>Create new Category</h1>
+    <div class="container my-5">
+        <div class="mx-auto" style="max-width: 600px;">
+            <div class="card-body">
+                {{ include('category/_form.html.twig') }}
 
-    {{ include('category/_form.html.twig') }}
-
-    <a href="{{ path('app_category_index') }}">back to list</a>
+                <div class="d-flex justify-content-between mt-4">
+                    <a href="{{ path('admin_dashboard') }}" class="btn btn-secondary">
+                        Powrót do panelu administratora
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

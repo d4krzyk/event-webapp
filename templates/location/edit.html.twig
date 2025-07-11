@@ -1,13 +1,25 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Location{% endblock %}
+{% block title %}Edytuj lokalizację{% endblock %}
 
 {% block body %}
-    <h1>Edit Location</h1>
+<div class="container my-5">
 
-    {{ include('location/_form.html.twig', {'button_label': 'Update'}) }}
+        <div class="card-body">
+            {{ include('location/_form.html.twig', {'button_label': 'Zapisz zmiany'}) }}
 
-    <a href="{{ path('app_location_index') }}">back to list</a>
+            <div class="d-flex gap-2 justify-content-center mt-4">
+                <a href="{{ path('app_location_index') }}" class="btn btn-secondary">
+                    Powrót do listy lokalizacji
+                </a>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a href="{{ path('admin_dashboard') }}" class="btn btn-warning">
+                        Powrót do panelu administratora
+                    </a>
+                {% endif %}
+                {{ include('location/_delete_form.html.twig') }}
+            </div>
+        </div>
 
-    {{ include('location/_delete_form.html.twig') }}
+</div>
 {% endblock %}

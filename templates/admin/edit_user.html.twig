@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+    {% block title %}Edycja użytkownika{% endblock %}
+
+    {% block body %}
+        <div class="container my-5">
+            <div class="card shadow-lg rounded-4 mx-auto" style="max-width: 600px;">
+                <div class="card-header bg-primary text-white text-center rounded-top-4">
+                    <h4 class="mb-0">Edycja użytkownika: {{ user.username }}</h4>
+                </div>
+                <div class="card-body">
+                    {{ form_start(editUserForm, {'attr': {'class': 'row g-4'}}) }}
+                    <div class="col-12">
+                        {{ form_row(editUserForm.username, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                    <div class="col-12">
+                        {{ form_row(editUserForm.email, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label mb-2">Role</label>
+                        <div class="d-flex gap-3">
+                            {% for child in editUserForm.roles %}
+                                <div class="form-check">
+                                    {{ form_widget(child, {'attr': {'class': 'form-check-input'}}) }}
+                                    <label class="form-check-label" for="{{ child.vars.id }}">
+                                        {{ child.vars.label|trans }}
+                                    </label>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        {{ form_errors(editUserForm.roles) }}
+                    </div>
+                    <div class="col-12">
+                        <div class="form-check">
+                            {{ form_widget(editUserForm.isVerified, {'attr': {'class': 'form-check-input'}}) }}
+                            <label class="form-check-label" for="{{ editUserForm.isVerified.vars.id }}">
+                                {{ editUserForm.isVerified.vars.label|trans }}
+                            </label>
+                        </div>
+                        {{ form_errors(editUserForm.isVerified) }}
+                    </div>
+                    <div class="col-12 text-center mt-3">
+                        <button class="btn btn-success px-4 py-2" style="font-size: 1.1em;">
+                            Zapisz
+                        </button>
+                    </div>
+                    {{ form_end(editUserForm) }}
+
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="{{ path('admin_dashboard') }}" class="btn btn-secondary">
+                            Powrót do panelu administratora
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock %}

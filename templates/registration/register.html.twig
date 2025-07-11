@@ -1,24 +1,39 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}Rejestracja{% endblock %}
 
 {% block body %}
-    {% for flash_error in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-    {% endfor %}
+    <div class="container my-5">
+        <div class="card shadow-lg rounded-4 mx-auto" style="max-width: 500px;">
+            <div class="card-header bg-primary text-white text-center rounded-top-4">
+                <h3 class="mb-0">Rejestracja</h3>
+            </div>
+            <div class="card-body">
+                {% for flash_error in app.flashes('verify_email_error') %}
+                    <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+                {% endfor %}
 
-    <h1>Register</h1>
-
-    {{ form_errors(registrationForm) }}
-
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.username) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
-
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+                {{ form_start(registrationForm, {'attr': {'class': 'row g-3'}}) }}
+                <div class="col-12">
+                    {{ form_row(registrationForm.username, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="col-12">
+                    {{ form_row(registrationForm.email, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="col-12">
+                    {{ form_row(registrationForm.plainPassword, {
+                        label: 'Hasło',
+                        attr: {'class': 'form-control'}
+                    }) }}
+                </div>
+                <div class="col-12">
+                    {{ form_row(registrationForm.agreeTerms) }}
+                </div>
+                <div class="col-12 text-center mt-2">
+                    <button type="submit" class="btn btn-success px-4 py-2" style="font-size: 1.1em;">Zarejestruj się</button>
+                </div>
+                {{ form_end(registrationForm) }}
+            </div>
+        </div>
+    </div>
 {% endblock %}

@@ -1,19 +1,63 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+        {% block title %}Event WebApp - Strona Główna{% endblock %}
 
-{% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+        {% block body %}
+            <style>
+                html, body {
+                    height: 100%;
+                    margin: 0;
+                    padding: 0;
+                }
+                body {
+                    background: linear-gradient(135deg, #ffffff 0%, #dedee1 100%);
+                    min-height: 100vh;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+                .welcome-card {
+                    width: 100%;
+                    max-width: 440px;
+                    box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+                    border-radius: 1.5rem;
+                }
+                .welcome-card .card-header {
+                    background: #235159;
+                    color: #fff;
+                    font-size: 1.5rem;
+                    border-top-left-radius: 1.5rem;
+                    border-top-right-radius: 1.5rem;
+                    text-align: center;
+                    font-weight: bold;
+                }
+                .welcome-card .card-body {
+                    background: #fff;
+                    border-bottom-left-radius: 1.5rem;
+                    border-bottom-right-radius: 1.5rem;
+                    text-align: center;
+                }
+                .welcome-card .btn {
+                    min-width: 140px;
+                    font-size: 1.1em;
+                    margin: 0.5em 0.5em 0 0;
+                }
+            </style>
 
-<div class="example-wrapper">
-    <h1>Witamy w Event WebApp!</h1>
-
-    <div style="margin: 2em 0;">
-        <a href="{{ path('app_login') }}" class="btn btn-primary" style="margin-right: 1em;">Zaloguj się</a>
-        <a href="{{ path('app_register') }}" class="btn btn-secondary">Zarejestruj się</a>
-    </div>
-</div>
-{% endblock %}
+                <div class="card welcome-card">
+                    <div class="card-header">
+                        <span style="color: #ffe082;">Event WebApp</span>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-4" style="font-size: 1.2em;">
+                            Zarządzaj wydarzeniami, dołączaj do eventów i poznawaj nowych ludzi!
+                        </p>
+                        {% if app.user %}
+                            <a href="{{ path('app_event_index') }}" class="btn btn-success">Przejdź do wydarzeń</a>
+                        {% else %}
+                            <a href="{{ path('app_login') }}" class="btn btn-primary">Zaloguj się</a>
+                            <a href="{{ path('app_register') }}" class="btn btn-warning text-white">Zarejestruj się</a>
+                        {% endif %}
+                    </div>
+                </div>
+        {% endblock %}

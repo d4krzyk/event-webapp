@@ -1,11 +1,27 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Location{% endblock %}
+{% block title %}Dodaj nową lokalizację{% endblock %}
 
 {% block body %}
-    <h1>Create new Location</h1>
-
-    {{ include('location/_form.html.twig') }}
-
-    <a href="{{ path('app_location_index') }}">back to list</a>
+    <div class="container my-5">
+            <div class="card-body">
+                {{ include('location/_form.html.twig') }}
+                <div class="mt-3 text-center">
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a href="{{ path('admin_dashboard') }}" class="btn btn-warning">
+                            Powrót do panelu administratora
+                        </a>
+                    {% endif %}
+                    {% set eid = event.id is defined and event.id is not empty ? event.id : (event_id is defined and event_id is not empty ? event_id : null) %}
+                    {% if eid %}
+                        <a href="{{ path('app_event_edit', {'id': eid}) }}" class="btn btn-primary">
+                            Powrót do edycji wydarzenia
+                        </a>
+                    {% endif %}
+                    <a href="{{ path('app_location_index') }}" class="btn btn-secondary">
+                        Powrót do listy lokalizacji
+                    </a>
+                </div>
+            </div>
+    </div>
 {% endblock %}

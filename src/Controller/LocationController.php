@@ -29,6 +29,11 @@ final class LocationController extends AbstractController
         $form = $this->createForm(LocationType::class, $location);
         $form->handleRequest($request);
 
+        // Pobierz event_id z query params, np. /location/new?event_id=5
+        $eventId = $request->query->get('event_id');
+
+
+
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($location);
             $entityManager->flush();
@@ -39,6 +44,7 @@ final class LocationController extends AbstractController
         return $this->render('location/new.html.twig', [
             'location' => $location,
             'form' => $form,
+            'event_id' => $eventId,
         ]);
     }
 
@@ -54,9 +60,6 @@ final class LocationController extends AbstractController
     public function edit(Request $request, Location $location, EntityManagerInterface $entityManager): Response
     {
         $this->denyAccessUnlessGranted('ROLE_AUTH_USER');
-        if ($location->getCreatedByUser() !== $this->getUser()) {
-            throw $this->createAccessDeniedException('Możesz edytować tylko własne lokalizacje.');
-        }
         $form = $this->createForm(LocationType::class, $location);
         $form->handleRequest($request);
 

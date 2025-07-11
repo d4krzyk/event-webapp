@@ -1,44 +1,121 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Event index{% endblock %}
+{% block title %}Lista wydarzeń{% endblock %}
 
 {% block body %}
-    <h1>Event index</h1>
+    <div class="container my-5">
+        <div class="card shadow-lg rounded-4 mx-auto" style="max-width: 1000px;">
+            <div class="card-header bg-primary text-white text-center rounded-top-4 d-flex justify-content-between align-items-center">
+                <h3 class="mb-0">Lista wydarzeń</h3>
+                <a href="{{ path('app_event_new') }}" class="btn btn-success">Dodaj nowe wydarzenie</a>
+            </div>
+            <div class="card-body">
+                <div class="mb-3 d-flex flex-wrap gap-2">
+                    <a href="{{ path('app_home') }}" class="btn btn-secondary">
+                        Powrót do strony głównej
+                    </a>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a href="{{ path('admin_dashboard') }}" class="btn btn-warning">
+                            Panel administratora
+                        </a>
+                    {% endif %}
+                    {% if app.user %}
+                        <form method="post" action="{{ path('app_logout') }}" class="d-inline">
+                            <button type="submit" class="btn btn-danger">Wyloguj się</button>
+                        </form>
+                    {% endif %}
+                </div>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Title</th>
-{#                <th>Description</th>#}
-                <th>Date</th>
-                <th>Location</th>
-                <th>Category</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for event in events %}
-            <tr>
-                <td>{{ event.id }}</td>
-                <td>{{ event.title }}</td>
-{#                <td>{{ event.description }}</td>#}
-                <td>{{ event.startDate ? event.startDate|date('d-m-Y H:i') : '' }}</td>
-                <td>{{ event.location ? event.location.city : "" }}</td>
-                <td>{{ event.category ? event.category.name : "" }}</td>
-{#                <td>{{ event.endDate ? event.endDate|date('Y-m-d H:i') : '' }}</td>#}
-                <td>
-                    <a href="{{ path('app_event_show', {'id': event.id}) }}">show</a>
-                    <a href="{{ path('app_event_edit', {'id': event.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="7">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-light">
+                        <strong>Filtruj wydarzenia</strong>
+                    </div>
+                    <div class="card-body pb-2">
+                        {{ form_start(filterForm, {'method': 'GET'}) }}
+                        <div class="row g-3 align-items-end">
+                            <div class="col-md-3">
+                                {{ form_row(filterForm.title, {
+                                    'attr': {
+                                        'placeholder': 'np. koncert, konferencja...',
+                                        'class': 'form-control',
+                                        'style': 'font-style: italic; color: #888;'
+                                    }
+                                }) }}
+                            </div>
+                            <div class="col-md-2">
+                                {{ form_row(filterForm.category, {
+                                    'attr': {
+                                        'class': 'form-select'
+                                    }
+                                }) }}
+                            </div>
+                            <div class="col-md-2">
+                                {{ form_row(filterForm.location, {
+                                    'attr': {
+                                        'class': 'form-select'
+                                    }
+                                }) }}
+                            </div>
+                            <div class="col-md-2">
+                                {{ form_row(filterForm.startDate, {
+                                    'attr': {
+                                        'class': 'form-control',
+                                        'placeholder': 'Od kiedy?',
+                                        'style': 'font-style: italic; color: #888;'
+                                    }
+                                }) }}
+                            </div>
+                            <div class="col-md-2">
+                                {{ form_row(filterForm.endDate, {
+                                    'attr': {
+                                        'class': 'form-control',
+                                        'placeholder': 'Do kiedy?',
+                                        'style': 'font-style: italic; color: #888;'
+                                    }
+                                }) }}
+                            </div>
+                            <div class="col-md-1 d-grid">
+                                <button class="btn btn-primary">Szukaj</button>
+                            </div>
+                        </div>
+                        {{ form_end(filterForm) }}
+                    </div>
+                </div>
 
-    <a href="{{ path('app_event_new') }}">Create new</a>
+                <table class="table table-bordered align-middle table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Id</th>
+                            <th>Tytuł</th>
+                            <th>Data</th>
+                            <th>Lokalizacja</th>
+                            <th>Kategoria</th>
+                            <th>Akcje</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for event in events %}
+                            <tr>
+                                <td>{{ event.id }}</td>
+                                <td>{{ event.title }}</td>
+                                <td>{{ event.startDate ? event.startDate|date('d-m-Y H:i') : '' }}</td>
+                                <td>{{ event.location ? event.location.city : '' }}</td>
+                                <td>{{ event.category ? event.category.name : '' }}</td>
+                                <td>
+                                    <a href="{{ path('app_event_show', {'id': event.id}) }}" class="btn btn-sm btn-info me-1">Szczegóły</a>
+                                    {% if app.user and event.createdByUser and event.createdByUser.id == app.user.id %}
+                                        <a href="{{ path('app_event_edit', {'id': event.id}) }}" class="btn btn-sm btn-primary">Edytuj</a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="6" class="text-center">Brak wydarzeń</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 {% endblock %}

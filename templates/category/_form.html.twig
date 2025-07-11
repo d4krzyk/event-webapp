@@ -1,4 +1,22 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
+<div class="card shadow-lg rounded-4 mt-4 mb-4 mx-auto" style="max-width: 600px;">
+    <div class="card-header bg-primary text-white text-center rounded-top-4">
+        <h4 class="mb-0">
+            {{ button_label is defined and button_label == 'Update' ? 'Edytuj kategorię' : 'Dodaj nową kategorię' }}
+        </h4>
+    </div>
+    <div class="card-body">
+        {{ form_start(form, {'attr': {'class': 'row g-4'}}) }}
+        <div class="col-12">
+            {{ form_row(form.name, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        <div class="col-12">
+            {{ form_row(form.slug, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        <div class="col-12 text-center mt-3">
+            <button class="btn btn-success px-4 py-2" style="font-size: 1.1em;">
+                {{ button_label|default('Zapisz') }}
+            </button>
+        </div>
+        {{ form_end(form) }}
+    </div>
+</div>

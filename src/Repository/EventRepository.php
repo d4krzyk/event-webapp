@@ -16,6 +16,31 @@ class EventRepository extends ServiceEntityRepository
         parent::__construct($registry, Event::class);
     }
 
+    public function findByFilters(array $filters): array
+    {
+        $qb = $this->createQueryBuilder('e');
+        if (!empty($filters['title'])) {
+            $qb->andWhere('e.title LIKE :title')
+                ->setParameter('title', '%' . $filters['title'] . '%');
+        }
+        if (!empty($filters['category'])) {
+            $qb->andWhere('e.category = :category')
+                ->setParameter('category', $filters['category']);
+        }
+        if (!empty($filters['location'])) {
+            $qb->andWhere('e.location = :location')
+                ->setParameter('location', $filters['location']);
+        }
+        if (!empty($filters['startDate'])) {
+            $qb->andWhere('e.startDate >= :startDate')
+                ->setParameter('startDate', $filters['startDate']);
+        }
+        if (!empty($filters['endDate'])) {
+            $qb->andWhere('e.endDate <= :endDate')
+                ->setParameter('endDate', $filters['endDate']);
+        }
+        return $qb->getQuery()->getResult();
+    }
     //    /**
     //     * @return Event[] Returns an array of Event objects
     //     */

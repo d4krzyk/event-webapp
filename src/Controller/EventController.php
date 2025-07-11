@@ -14,11 +14,18 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/event')]
 final class EventController extends AbstractController
 {
-    #[Route(name: 'app_event_index', methods: ['GET'])]
-    public function index(EventRepository $eventRepository): Response
+    #[Route(name: 'app_event_index', methods: ['GET', 'POST'])]
+    public function index(Request $request, EventRepository $eventRepository): Response
     {
+        $form = $this->createForm(\App\Form\EventFilterType::class, null, ['method' => 'GET']);
+        $form->handleRequest($request);
+
+        $filters = $form->isSubmitted() && $form->isValid() ? $form->getData() : [];
+        $events = $eventRepository->findByFilters($filters);
+
         return $this->render('event/index.html.twig', [
-            'events' => $eventRepository->findAll(),
+            'events' => $events,
+            'filterForm' => $form->createView(),
         ]);
     }
 
@@ -30,7 +37,11 @@ final class EventController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $event->setCreatedByUser($this->getUser());
+            $user = $this->getUser();
+            if ($user instanceof \App\Security\AuthUserDecorator) {
+                $user = $user->getUser();
+            }
+            $event->setCreatedByUser($user);
             $entityManager->persist($event);
             $entityManager->flush();
 
@@ -55,7 +66,11 @@ final class EventController extends AbstractController
     public function edit(Request $request, Event $event, EntityManagerInterface $entityManager): Response
     {
         $this->denyAccessUnlessGranted('ROLE_AUTH_USER');
-        if ($event->getCreatedByUser() !== $this->getUser()) {
+        $currentUser = $this->getUser();
+        if ($currentUser instanceof \App\Security\AuthUserDecorator) {
+            $currentUser = $currentUser->getUser();
+        }
+        if (!$this->isGranted('ROLE_ADMIN') && $event->getCreatedByUser()?->getId() !== $currentUser?->getId()) {
             throw $this->createAccessDeniedException('Możesz edytować tylko własne wydarzenia.');
         }
         $form = $this->createForm(EventType::class, $event);
@@ -76,9 +91,12 @@ final class EventController extends AbstractController
     #[Route('/{id}', name: 'app_event_delete', methods: ['POST'])]
     public function delete(Request $request, Event $event, EntityManagerInterface $entityManager): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_AUTH_USER');
-        if ($event->getCreatedByUser() !== $this->getUser()) {
-            throw $this->createAccessDeniedException('Możesz usuwać tylko własne wydarzenia.');
+        $currentUser = $this->getUser();
+        if ($currentUser instanceof \App\Security\AuthUserDecorator) {
+            $currentUser = $currentUser->getUser();
+        }
+        if (!$this->isGranted('ROLE_ADMIN') && $event->getCreatedByUser()?->getId() !== $currentUser?->getId()) {
+            throw $this->createAccessDeniedException('Możesz edytować tylko własne wydarzenia.');
         }
 
         if ($this->isCsrfTokenValid('delete'.$event->getId(), $request->getPayload()->getString('_token'))) {
