@@ -10,7 +10,7 @@ Thumbs.db
 .env.test.local
 .env.dev.local
 .env.prod.local
-.env.*
+.env
 /compose*.bak
 
 
