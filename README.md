@@ -141,6 +141,22 @@ Nie musisz samodzielnie konfigurować crona – zadania uruchamiają się automa
 - Tabele: user, event, category, location, participation, reminder
 - Relacje: użytkownik-wydarzenie, wydarzenie-kategoria, wydarzenie-lokalizacja, uczestnictwo-wydarzenie, uczestnictwo-użytkownik, przypomnienie-wydarzenie, przypomnienie-użytkownik
 
+## Wymagane rozszerzenia PHP
+
+Upewnij się, że w pliku konfiguracyjnym `php.ini` twojego PHP masz włączone następujące rozszerzenia (niektóre mogą być już domyślnie aktywne, inne należy odkomentować usuwając średnik `;`):
+
+```ini
+extension=curl
+extension=intl
+extension=mbstring
+extension=openssl
+extension=pdo_pgsql
+extension=pgsql
+```
+
+Bez tych rozszerzeń aplikacja może nie działać poprawnie (np. obsługa bazy danych, wysyłka maili, translacje, itp.).
+
+
 ## Technologie
 
 - PHP 8.1+
@@ -150,3 +166,4 @@ Nie musisz samodzielnie konfigurować crona – zadania uruchamiają się automa
 - Twig
 - Doctrine ORM
 - Mailer (SMTP)
+
