@@ -7,10 +7,17 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * Repozytorium obsługujące zapytania dotyczące kategorii wydarzeń.
+ *
  * @extends ServiceEntityRepository<Category>
+ *
+ * Dostarcza metody do pobierania, wyszukiwania i filtrowania kategorii.
  */
 class CategoryRepository extends ServiceEntityRepository
 {
+    /**
+     * @param ManagerRegistry $registry Rejestr menedżera Doctrine
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Category::class);

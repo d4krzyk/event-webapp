@@ -12,8 +12,18 @@ use Symfony\Component\Routing\Attribute\Route;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 use App\Repository\UserRepository;
 
+/**
+ * Kontroler obsługujący rejestrację użytkowników oraz potwierdzanie adresu e-mail.
+ */
 class RegistrationController extends AbstractController
 {
+    /**
+     * Obsługuje proces rejestracji użytkownika.
+     *
+     * @param Request $request
+     * @param UserRegistrationService $registrationService
+     * @return Response
+     */
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserRegistrationService $registrationService): Response
     {
@@ -34,6 +44,14 @@ class RegistrationController extends AbstractController
         ]);
     }
 
+    /**
+     * Obsługuje potwierdzenie adresu e-mail użytkownika.
+     *
+     * @param Request $request
+     * @param UserRegistrationService $registrationService
+     * @param UserRepository $userRepo
+     * @return Response
+     */
     #[Route('/verify/email', name: 'app_verify_email')]
     public function verifyUserEmail(Request $request, UserRegistrationService $registrationService, UserRepository $userRepo): Response
     {
@@ -59,6 +77,12 @@ class RegistrationController extends AbstractController
         }
         return $this->redirectToRoute('app_event_index');
     }
+
+    /**
+     * Wyświetla stronę informującą o konieczności sprawdzenia e-maila.
+     *
+     * @return Response
+     */
     #[Route('/check-email', name: 'app_check_email')]
     public function checkEmail(): Response
     {

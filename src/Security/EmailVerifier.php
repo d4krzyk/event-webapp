@@ -10,6 +10,9 @@ use Symfony\Component\Mailer\MailerInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 
+/**
+ * Klasa pomocnicza do obsługi weryfikacji adresu e-mail użytkownika.
+ */
 class EmailVerifier
 {
     public function __construct(
@@ -19,6 +22,14 @@ class EmailVerifier
     ) {
     }
 
+    /**
+     * Wysyła e-mail z linkiem weryfikacyjnym do użytkownika.
+     *
+     * @param string $verifyEmailRouteName Nazwa trasy do weryfikacji
+     * @param User $user Użytkownik do weryfikacji
+     * @param TemplatedEmail $email Szablon e-maila
+     * @return void
+     */
     public function sendEmailConfirmation(string $verifyEmailRouteName, User $user, TemplatedEmail $email): void
     {
         $signatureComponents = $this->verifyEmailHelper->generateSignature(
@@ -38,7 +49,11 @@ class EmailVerifier
     }
 
     /**
-     * @throws VerifyEmailExceptionInterface
+     * Obsługuje potwierdzenie adresu e-mail użytkownika na podstawie żądania.
+     *
+     * @param Request $request Żądanie HTTP
+     * @param User $user Użytkownik do potwierdzenia
+     * @return void
      */
     public function handleEmailConfirmation(Request $request, User $user): void
     {

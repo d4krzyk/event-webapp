@@ -16,8 +16,17 @@ use Symfony\Component\Mime\Email;
     name: 'reminder:send',
     description: 'Wysyła maile z przypomnieniami o wydarzeniach, gdy nadejdzie czas przypomnienia.'
 )]
+/**
+ * Komenda konsolowa wysyłająca e-maile z przypomnieniami o wydarzeniach,
+ * gdy nadejdzie czas przypomnienia.
+ */
 class SendEventRemindersCommand extends Command
 {
+    /**
+     * @param ReminderRepository $reminderRepo Repozytorium przypomnień
+     * @param EntityManagerInterface $em Menedżer encji Doctrine
+     * @param MailerInterface $mailer Komponent do wysyłania e-maili
+     */
     public function __construct(
         private ReminderRepository $reminderRepo,
         private EntityManagerInterface $em,
@@ -27,6 +36,11 @@ class SendEventRemindersCommand extends Command
     }
 
     /**
+     * Wykonuje logikę wysyłania przypomnień e-mail.
+     *
+     * @param InputInterface $input Wejście konsoli
+     * @param OutputInterface $output Wyjście konsoli
+     * @return int Kod zakończenia
      * @throws TransportExceptionInterface
      */
     protected function execute(InputInterface $input, OutputInterface $output): int

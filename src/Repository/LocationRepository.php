@@ -7,10 +7,17 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * Repozytorium obsługujące zapytania dotyczące lokalizacji wydarzeń.
+ *
  * @extends ServiceEntityRepository<Location>
+ *
+ * Dostarcza metody do pobierania, wyszukiwania i filtrowania lokalizacji.
  */
 class LocationRepository extends ServiceEntityRepository
 {
+    /**
+     * @param ManagerRegistry $registry Rejestr menedżera Doctrine
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Location::class);

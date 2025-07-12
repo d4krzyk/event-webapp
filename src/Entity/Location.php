@@ -8,6 +8,11 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: LocationRepository::class)]
+/**
+ * Klasa encji reprezentująca lokalizację wydarzenia.
+ *
+ * Przechowuje informacje o nazwie, mieście, adresie oraz powiązanych wydarzeniach.
+ */
 class Location
 {
     #[ORM\Id]
@@ -35,16 +40,32 @@ class Location
         $this->events = new ArrayCollection();
     }
 
+    /**
+     * Zwraca identyfikator lokalizacji.
+     *
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * Zwraca nazwę lokalizacji.
+     *
+     * @return string|null
+     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
+    /**
+     * Ustawia nazwę lokalizacji.
+     *
+     * @param string $name
+     * @return static
+     */
     public function setName(string $name): static
     {
         $this->name = $name;
@@ -52,11 +73,22 @@ class Location
         return $this;
     }
 
+    /**
+     * Zwraca miasto lokalizacji.
+     *
+     * @return string|null
+     */
     public function getCity(): ?string
     {
         return $this->city;
     }
 
+    /**
+     * Ustawia miasto lokalizacji.
+     *
+     * @param string $city
+     * @return static
+     */
     public function setCity(string $city): static
     {
         $this->city = $city;
@@ -64,11 +96,22 @@ class Location
         return $this;
     }
 
+    /**
+     * Zwraca adres lokalizacji.
+     *
+     * @return string|null
+     */
     public function getAddress(): ?string
     {
         return $this->address;
     }
 
+    /**
+     * Ustawia adres lokalizacji.
+     *
+     * @param string $address
+     * @return static
+     */
     public function setAddress(string $address): static
     {
         $this->address = $address;
@@ -77,6 +120,8 @@ class Location
     }
 
     /**
+     * Zwraca kolekcję wydarzeń powiązanych z lokalizacją.
+     *
      * @return Collection<int, Event>
      */
     public function getEvents(): Collection
@@ -84,6 +129,12 @@ class Location
         return $this->events;
     }
 
+    /**
+     * Dodaje wydarzenie do lokalizacji.
+     *
+     * @param Event $event
+     * @return static
+     */
     public function addEvent(Event $event): static
     {
         if (!$this->events->contains($event)) {
@@ -94,6 +145,12 @@ class Location
         return $this;
     }
 
+    /**
+     * Usuwa wydarzenie z lokalizacji.
+     *
+     * @param Event $event
+     * @return static
+     */
     public function removeEvent(Event $event): static
     {
         if ($this->events->removeElement($event)) {

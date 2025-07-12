@@ -11,9 +11,19 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
+/**
+ * Kontroler obsługujący operacje na wydarzeniach (lista, szczegóły, tworzenie, edycja, usuwanie).
+ */
 #[Route('/event')]
 final class EventController extends AbstractController
 {
+    /**
+     * Wyświetla listę wydarzeń z możliwością filtrowania.
+     *
+     * @param Request $request
+     * @param EventRepository $eventRepository
+     * @return Response
+     */
     #[Route(name: 'app_event_index', methods: ['GET', 'POST'])]
     public function index(Request $request, EventRepository $eventRepository): Response
     {
@@ -29,6 +39,13 @@ final class EventController extends AbstractController
         ]);
     }
 
+    /**
+     * Tworzy nowe wydarzenie.
+     *
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
     #[Route('/new', name: 'app_event_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -54,6 +71,12 @@ final class EventController extends AbstractController
         ]);
     }
 
+    /**
+     * Wyświetla szczegóły wybranego wydarzenia.
+     *
+     * @param Event $event
+     * @return Response
+     */
     #[Route('/{id}', name: 'app_event_show', methods: ['GET'])]
     public function show(Event $event): Response
     {
@@ -62,6 +85,14 @@ final class EventController extends AbstractController
         ]);
     }
 
+    /**
+     * Edytuje wybrane wydarzenie.
+     *
+     * @param Request $request
+     * @param Event $event
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
     #[Route('/{id}/edit', name: 'app_event_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Event $event, EntityManagerInterface $entityManager): Response
     {
@@ -88,6 +119,14 @@ final class EventController extends AbstractController
         ]);
     }
 
+    /**
+     * Usuwa wybrane wydarzenie.
+     *
+     * @param Request $request
+     * @param Event $event
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
     #[Route('/{id}/delete', name: 'app_event_delete', methods: ['GET','POST'])]
     public function delete(Request $request, Event $event, EntityManagerInterface $entityManager): Response
     {

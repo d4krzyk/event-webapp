@@ -13,8 +13,17 @@ use Symfony\Component\Console\Output\OutputInterface;
     name: 'app:set-reminder-dates',
     description: 'Ustawia datę przypomnienia na 2 dni przed eventem dla wszystkich reminderów, gdzie jeszcze nie ustawiono daty.'
 )]
+/**
+ * Komenda konsolowa ustawiająca daty przypomnień na 2 dni przed wydarzeniem,
+ * dla wszystkich przypomnień, które nie mają jeszcze ustawionej daty,
+ * a wydarzenie rozpoczyna się za co najmniej 5 dni.
+ */
 class SetReminderDatesCommand extends Command
 {
+    /**
+     * @param ReminderRepository $reminderRepo Repozytorium przypomnień
+     * @param EntityManagerInterface $em Menedżer encji Doctrine
+     */
     public function __construct(
         private ReminderRepository     $reminderRepo,
         private EntityManagerInterface $em
@@ -23,6 +32,13 @@ class SetReminderDatesCommand extends Command
         parent::__construct();
     }
 
+    /**
+     * Wykonuje logikę ustawiania dat przypomnień.
+     *
+     * @param InputInterface $input Wejście konsoli
+     * @param OutputInterface $output Wyjście konsoli
+     * @return int Kod zakończenia
+     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $now = new \DateTimeImmutable();

@@ -20,8 +20,10 @@ services:
   db:
     image: postgres:17
     environment:
-      POSTGRES_DB: wtw-db
-      POSTGRES_USER: user123
-      POSTGRES_PASSWORD: haslo123
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    env_file:
+      - .env
     ports:
       - "5432:5432"

@@ -16,16 +16,30 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\SecurityRequestAttributes;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
+/**
+ * Autoryzator logowania użytkownika w systemie Symfony.
+ *
+ * Obsługuje proces uwierzytelniania, sprawdzanie CSRF, przekierowania po zalogowaniu oraz generowanie URL logowania.
+ */
 class LoginAuthenticator extends AbstractLoginFormAuthenticator
 {
     use TargetPathTrait;
 
     public const LOGIN_ROUTE = 'app_login';
 
+    /**
+     * @param UrlGeneratorInterface $urlGenerator Generator URL do przekierowań
+     */
     public function __construct(private UrlGeneratorInterface $urlGenerator)
     {
     }
 
+    /**
+     * Tworzy obiekt Passport na podstawie danych z żądania logowania.
+     *
+     * @param Request $request
+     * @return Passport
+     */
     public function authenticate(Request $request): Passport
     {
         $username = $request->getPayload()->getString('username');
@@ -42,6 +56,14 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
         );
     }
 
+    /**
+     * Obsługuje przekierowanie po pomyślnym zalogowaniu.
+     *
+     * @param Request $request
+     * @param TokenInterface $token
+     * @param string $firewallName
+     * @return Response|null
+     */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
 //        if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
@@ -53,6 +75,12 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
         return new RedirectResponse($this->urlGenerator->generate('app_event_index'));
     }
 
+    /**
+     * Zwraca URL do strony logowania.
+     *
+     * @param Request $request
+     * @return string
+     */
     protected function getLoginUrl(Request $request): string
     {
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);

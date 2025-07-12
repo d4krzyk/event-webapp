@@ -7,15 +7,28 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * Repozytorium obsługujące zapytania dotyczące wydarzeń.
+ *
  * @extends ServiceEntityRepository<Event>
+ *
+ * Dostarcza metody do pobierania, filtrowania i sortowania wydarzeń.
  */
 class EventRepository extends ServiceEntityRepository
 {
+    /**
+     * @param ManagerRegistry $registry Rejestr menedżera Doctrine
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Event::class);
     }
 
+    /**
+     * Wyszukuje wydarzenia na podstawie przekazanych filtrów.
+     *
+     * @param array $filters Tablica filtrów (tytuł, kategoria, lokalizacja, daty, status, sortowanie)
+     * @return Event[]
+     */
     public function findByFilters(array $filters): array
     {
         $qb = $this->createQueryBuilder('e');

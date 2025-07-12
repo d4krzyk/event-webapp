@@ -16,8 +16,20 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use App\Form\EventType;
 
+/**
+ * Kontroler obsługujący panel administracyjny oraz operacje na użytkownikach i wydarzeniach przez administratora.
+ */
 class AdminController extends AbstractController
 {
+    /**
+     * Wyświetla panel administracyjny z listą kategorii, użytkowników, wydarzeń i lokalizacji.
+     *
+     * @param CategoryRepository $categoryRepo
+     * @param UserRepository $userRepo
+     * @param LocationRepository $locationRepo
+     * @param EventRepository $eventRepo
+     * @return Response
+     */
     #[Route('/admin', name: 'admin_dashboard')]
     public function dashboard(CategoryRepository $categoryRepo, UserRepository $userRepo, LocationRepository $locationRepo, EventRepository $eventRepo): Response
     {
@@ -28,6 +40,15 @@ class AdminController extends AbstractController
             'locations' => $locationRepo->findAll(),
         ]);
     }
+    /**
+     * Edytuje dane wybranego użytkownika.
+     *
+     * @param int $id
+     * @param UserRepository $userRepo
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @return Response
+     */
     #[Route('/admin/user/{id}/edit', name: 'admin_user_edit')]
     public function editUser(
         int $id,
@@ -54,7 +75,16 @@ class AdminController extends AbstractController
             'user' => $user,
         ]);
     }
-
+    /**
+     * Usuwa wybranego użytkownika.
+     *
+     * @param int $id
+     * @param UserRepository $userRepo
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @param CsrfTokenManagerInterface $csrfTokenManager
+     * @return RedirectResponse
+     */
     #[Route('/admin/user/{id}/delete', name: 'admin_user_delete', methods: ['POST'])]
     public function deleteUser(
         int $id,
@@ -79,6 +109,15 @@ class AdminController extends AbstractController
         $this->addFlash('success', 'Użytkownik usunięty.');
         return $this->redirectToRoute('admin_dashboard');
     }
+    /**
+     * Edytuje wybrane wydarzenie.
+     *
+     * @param int $id
+     * @param EventRepository $eventRepo
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @return Response
+     */
     #[Route('/admin/event/{id}/edit', name: 'admin_event_edit')]
     public function editEvent(
         int $id,
@@ -105,8 +144,4 @@ class AdminController extends AbstractController
             'event' => $event,
         ]);
     }
-
-
-
-
 }

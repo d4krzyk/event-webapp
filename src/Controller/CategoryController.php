@@ -11,9 +11,18 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
+/**
+ * Kontroler obsługujący operacje CRUD na kategoriach wydarzeń.
+ */
 #[Route('/category')]
 final class CategoryController extends AbstractController
 {
+    /**
+     * Wyświetla listę wszystkich kategorii.
+     *
+     * @param CategoryRepository $categoryRepository Repozytorium kategorii
+     * @return Response Odpowiedź HTTP z widokiem listy kategorii
+     */
     #[Route(name: 'app_category_index', methods: ['GET'])]
     public function index(CategoryRepository $categoryRepository): Response
     {
@@ -22,6 +31,13 @@ final class CategoryController extends AbstractController
         ]);
     }
 
+    /**
+     * Tworzy nową kategorię.
+     *
+     * @param Request $request Obiekt żądania HTTP
+     * @param EntityManagerInterface $entityManager Menedżer encji Doctrine
+     * @return Response Odpowiedź HTTP z formularzem lub przekierowaniem
+     */
     #[Route('/new', name: 'app_category_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -43,6 +59,12 @@ final class CategoryController extends AbstractController
         ]);
     }
 
+    /**
+     * Wyświetla szczegóły wybranej kategorii.
+     *
+     * @param Category $category Wybrana kategoria
+     * @return Response Odpowiedź HTTP z widokiem szczegółów
+     */
     #[Route('/{id}', name: 'app_category_show', methods: ['GET'])]
     public function show(Category $category): Response
     {
@@ -51,6 +73,14 @@ final class CategoryController extends AbstractController
         ]);
     }
 
+    /**
+     * Edytuje istniejącą kategorię.
+     *
+     * @param Request $request Obiekt żądania HTTP
+     * @param Category $category Edytowana kategoria
+     * @param EntityManagerInterface $entityManager Menedżer encji Doctrine
+     * @return Response Odpowiedź HTTP z formularzem lub przekierowaniem
+     */
     #[Route('/{id}/edit', name: 'app_category_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Category $category, EntityManagerInterface $entityManager): Response
     {
@@ -70,6 +100,14 @@ final class CategoryController extends AbstractController
         ]);
     }
 
+    /**
+     * Usuwa wybraną kategorię.
+     *
+     * @param Request $request Obiekt żądania HTTP
+     * @param Category $category Usuwana kategoria
+     * @param EntityManagerInterface $entityManager Menedżer encji Doctrine
+     * @return Response Przekierowanie po usunięciu
+     */
     #[Route('/{id}/delete', name: 'app_category_delete', methods: ['GET','POST'])]
     public function delete(Request $request, Category $category, EntityManagerInterface $entityManager): Response
     {

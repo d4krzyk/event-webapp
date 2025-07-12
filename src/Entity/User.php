@@ -13,6 +13,11 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
+/**
+ * Klasa encji reprezentująca użytkownika systemu.
+ *
+ * Przechowuje dane logowania, e-mail, role, status weryfikacji oraz powiązania z wydarzeniami, uczestnictwami i przypomnieniami.
+ */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -62,26 +67,52 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->reminders = new ArrayCollection();
     }
 
+    /**
+     * Zwraca identyfikator użytkownika.
+     *
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * Zwraca identyfikator użytkownika do autoryzacji.
+     *
+     * @return string
+     */
     public function getUserIdentifier(): string
     {
         return (string) $this->username;
     }
 
+    /**
+     * Czyści tymczasowe dane wrażliwe użytkownika.
+     *
+     * @return void
+     */
     public function eraseCredentials(): void
     {
         // Jeśli przechowujesz tymczasowe dane wrażliwe, wyczyść je tutaj
     }
 
+    /**
+     * Zwraca adres e-mail użytkownika.
+     *
+     * @return string|null
+     */
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
+    /**
+     * Ustawia adres e-mail użytkownika.
+     *
+     * @param string $email
+     * @return static
+     */
     public function setEmail(string $email): static
     {
         $this->email = $email;
@@ -89,11 +120,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * Zwraca hasło użytkownika.
+     *
+     * @return string|null
+     */
     public function getPassword(): ?string
     {
         return $this->password;
     }
 
+    /**
+     * Ustawia hasło użytkownika.
+     *
+     * @param string $password
+     * @return static
+     */
     public function setPassword(string $password): static
     {
         $this->password = $password;
@@ -101,6 +143,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * Zwraca role użytkownika.
+     *
+     * @return array
+     */
     public function getRoles(): array
     {
         $roles = $this->roles;
@@ -108,6 +155,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($roles);
     }
 
+    /**
+     * Ustawia role użytkownika.
+     *
+     * @param array $roles
+     * @return static
+     */
     public function setRoles(array $roles): static
     {
         $this->roles = $roles;
@@ -115,6 +168,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
+     * Zwraca kolekcję wydarzeń utworzonych przez użytkownika.
+     *
      * @return Collection<int, Event>
      */
     public function getEvents(): Collection
@@ -122,6 +177,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->events;
     }
 
+    /**
+     * Dodaje wydarzenie do użytkownika.
+     *
+     * @param Event $event
+     * @return static
+     */
     public function addEvent(Event $event): static
     {
         if (!$this->events->contains($event)) {
@@ -132,6 +193,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * Usuwa wydarzenie od użytkownika.
+     *
+     * @param Event $event
+     * @return static
+     */
     public function removeEvent(Event $event): static
     {
         if ($this->events->removeElement($event)) {
@@ -145,6 +212,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
+     * Zwraca kolekcję uczestnictw użytkownika.
+     *
      * @return Collection<int, Participation>
      */
     public function getParticipations(): Collection
@@ -152,6 +221,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->participations;
     }
 
+    /**
+     * Dodaje uczestnictwo do użytkownika.
+     *
+     * @param Participation $participation
+     * @return static
+     */
     public function addParticipation(Participation $participation): static
     {
         if (!$this->participations->contains($participation)) {
@@ -162,6 +237,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * Usuwa uczestnictwo od użytkownika.
+     *
+     * @param Participation $participation
+     * @return static
+     */
     public function removeParticipation(Participation $participation): static
     {
         if ($this->participations->removeElement($participation)) {
@@ -175,6 +256,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
+     * Zwraca kolekcję przypomnień użytkownika.
+     *
      * @return Collection<int, Reminder>
      */
     public function getReminders(): Collection
@@ -182,6 +265,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->reminders;
     }
 
+    /**
+     * Dodaje przypomnienie do użytkownika.
+     *
+     * @param Reminder $reminder
+     * @return static
+     */
     public function addReminder(Reminder $reminder): static
     {
         if (!$this->reminders->contains($reminder)) {
@@ -192,6 +281,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * Usuwa przypomnienie od użytkownika.
+     *
+     * @param Reminder $reminder
+     * @return static
+     */
     public function removeReminder(Reminder $reminder): static
     {
         if ($this->reminders->removeElement($reminder)) {
@@ -204,11 +299,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * Zwraca nazwę użytkownika.
+     *
+     * @return string|null
+     */
     public function getUsername(): ?string
     {
         return $this->username;
     }
 
+    /**
+     * Ustawia nazwę użytkownika.
+     *
+     * @param string $username
+     * @return static
+     */
     public function setUsername(string $username): static
     {
         $this->username = $username;
@@ -216,11 +322,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * Sprawdza, czy użytkownik jest zweryfikowany.
+     *
+     * @return bool
+     */
     public function isVerified(): bool
     {
         return $this->isVerified;
     }
 
+    /**
+     * Ustawia status weryfikacji użytkownika.
+     *
+     * @param bool $isVerified
+     * @return static
+     */
     public function setIsVerified(bool $isVerified): static
     {
         $this->isVerified = $isVerified;

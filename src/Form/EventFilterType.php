@@ -10,8 +10,19 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+
+/**
+ * Formularz do filtrowania wydarzeń na liście.
+ */
 class EventFilterType extends AbstractType
 {
+    /**
+     * Buduje formularz filtrowania wydarzeń.
+     *
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder

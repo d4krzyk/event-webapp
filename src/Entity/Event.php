@@ -9,6 +9,12 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * Klasa encji reprezentująca wydarzenie.
+ *
+ * Przechowuje informacje o wydarzeniu, takie jak tytuł, opis, daty, lokalizacja, kategoria,
+ * twórca oraz powiązane uczestnictwa i przypomnienia.
+ */
 #[ORM\Entity(repositoryClass: EventRepository::class)]
 class Event
 {
@@ -31,6 +37,12 @@ class Event
     #[Assert\NotNull]
     private ?\DateTimeImmutable $endDate = null;
 
+    /**
+     * Sprawdza poprawność dat rozpoczęcia i zakończenia wydarzenia.
+     *
+     * @param \Symfony\Component\Validator\Context\ExecutionContextInterface $context Kontekst walidacji
+     * @return void
+     */
     #[Assert\Callback]
     public function validateDates(\Symfony\Component\Validator\Context\ExecutionContextInterface $context): void
     {
@@ -70,16 +82,32 @@ class Event
         $this->reminders = new ArrayCollection();
     }
 
+    /**
+     * Zwraca identyfikator wydarzenia.
+     *
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * Zwraca tytuł wydarzenia.
+     *
+     * @return string|null
+     */
     public function getTitle(): ?string
     {
         return $this->title;
     }
 
+    /**
+     * Ustawia tytuł wydarzenia.
+     *
+     * @param string $title
+     * @return static
+     */
     public function setTitle(string $title): static
     {
         $this->title = $title;
@@ -87,11 +115,22 @@ class Event
         return $this;
     }
 
+    /**
+     * Zwraca opis wydarzenia.
+     *
+     * @return string|null
+     */
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
+    /**
+     * Ustawia opis wydarzenia.
+     *
+     * @param string $description
+     * @return static
+     */
     public function setDescription(string $description): static
     {
         $this->description = $description;
@@ -99,11 +138,22 @@ class Event
         return $this;
     }
 
+    /**
+     * Zwraca datę rozpoczęcia wydarzenia.
+     *
+     * @return \DateTimeImmutable|null
+     */
     public function getStartDate(): ?\DateTimeImmutable
     {
         return $this->startDate;
     }
 
+    /**
+     * Ustawia datę rozpoczęcia wydarzenia.
+     *
+     * @param \DateTimeImmutable $startDate
+     * @return static
+     */
     public function setStartDate(\DateTimeImmutable $startDate): static
     {
         $this->startDate = $startDate;
@@ -111,11 +161,22 @@ class Event
         return $this;
     }
 
+    /**
+     * Zwraca datę zakończenia wydarzenia.
+     *
+     * @return \DateTimeImmutable|null
+     */
     public function getEndDate(): ?\DateTimeImmutable
     {
         return $this->endDate;
     }
 
+    /**
+     * Ustawia datę zakończenia wydarzenia.
+     *
+     * @param \DateTimeImmutable $endDate
+     * @return static
+     */
     public function setEndDate(\DateTimeImmutable $endDate): static
     {
         $this->endDate = $endDate;
@@ -123,11 +184,22 @@ class Event
         return $this;
     }
 
+    /**
+     * Zwraca użytkownika, który utworzył wydarzenie.
+     *
+     * @return User|null
+     */
     public function getCreatedByUser(): ?User
     {
         return $this->createdByUser;
     }
 
+    /**
+     * Ustawia użytkownika, który utworzył wydarzenie.
+     *
+     * @param User|null $createdByUser
+     * @return static
+     */
     public function setCreatedByUser(?User $createdByUser): static
     {
         $this->createdByUser = $createdByUser;
@@ -135,11 +207,22 @@ class Event
         return $this;
     }
 
+    /**
+     * Zwraca lokalizację wydarzenia.
+     *
+     * @return Location|null
+     */
     public function getLocation(): ?Location
     {
         return $this->location;
     }
 
+    /**
+     * Ustawia lokalizację wydarzenia.
+     *
+     * @param Location|null $location
+     * @return static
+     */
     public function setLocation(?Location $location): static
     {
         $this->location = $location;
@@ -147,11 +230,22 @@ class Event
         return $this;
     }
 
+    /**
+     * Zwraca kategorię wydarzenia.
+     *
+     * @return Category|null
+     */
     public function getCategory(): ?Category
     {
         return $this->category;
     }
 
+    /**
+     * Ustawia kategorię wydarzenia.
+     *
+     * @param Category|null $category
+     * @return static
+     */
     public function setCategory(?Category $category): static
     {
         $this->category = $category;
@@ -160,6 +254,8 @@ class Event
     }
 
     /**
+     * Zwraca kolekcję uczestnictw powiązanych z wydarzeniem.
+     *
      * @return Collection<int, Participation>
      */
     public function getParticipations(): Collection
@@ -167,6 +263,12 @@ class Event
         return $this->participations;
     }
 
+    /**
+     * Dodaje uczestnictwo do wydarzenia.
+     *
+     * @param Participation $participation
+     * @return static
+     */
     public function addParticipation(Participation $participation): static
     {
         if (!$this->participations->contains($participation)) {
@@ -177,6 +279,12 @@ class Event
         return $this;
     }
 
+    /**
+     * Usuwa uczestnictwo z wydarzenia.
+     *
+     * @param Participation $participation
+     * @return static
+     */
     public function removeParticipation(Participation $participation): static
     {
         if ($this->participations->removeElement($participation)) {
@@ -190,6 +298,8 @@ class Event
     }
 
     /**
+     * Zwraca kolekcję przypomnień powiązanych z wydarzeniem.
+     *
      * @return Collection<int, Reminder>
      */
     public function getReminders(): Collection
@@ -197,6 +307,12 @@ class Event
         return $this->reminders;
     }
 
+    /**
+     * Dodaje przypomnienie do wydarzenia.
+     *
+     * @param Reminder $reminder
+     * @return static
+     */
     public function addReminder(Reminder $reminder): static
     {
         if (!$this->reminders->contains($reminder)) {
@@ -207,6 +323,12 @@ class Event
         return $this;
     }
 
+    /**
+     * Usuwa przypomnienie z wydarzenia.
+     *
+     * @param Reminder $reminder
+     * @return static
+     */
     public function removeReminder(Reminder $reminder): static
     {
         if ($this->reminders->removeElement($reminder)) {

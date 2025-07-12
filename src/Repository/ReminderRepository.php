@@ -7,10 +7,17 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * Repozytorium obsługujące zapytania dotyczące przypomnień o wydarzeniach.
+ *
  * @extends ServiceEntityRepository<Reminder>
+ *
+ *
  */
 class ReminderRepository extends ServiceEntityRepository
 {
+    /**
+     * @param ManagerRegistry $registry Rejestr menedżera Doctrine
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Reminder::class);
