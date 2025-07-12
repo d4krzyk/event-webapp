@@ -62,12 +62,18 @@ final class CategoryController extends AbstractController
     /**
      * Wyświetla szczegóły wybranej kategorii.
      *
-     * @param Category $category Wybrana kategoria
+     * @param int $id Identyfikator kategorii
+     * @param CategoryRepository $categoryRepository Repozytorium kategorii
      * @return Response Odpowiedź HTTP z widokiem szczegółów
+     * @throws NotFoundHttpException Jeśli kategoria nie istnieje
      */
     #[Route('/{id}', name: 'app_category_show', methods: ['GET'])]
-    public function show(Category $category): Response
+    public function show(int $id, CategoryRepository $categoryRepository): Response
     {
+        $category = $categoryRepository->find($id);
+        if (!$category) {
+            throw $this->createNotFoundException('Kategoria nie istnieje.');
+        }
         return $this->render('category/show.html.twig', [
             'category' => $category,
         ]);

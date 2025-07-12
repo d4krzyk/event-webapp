@@ -67,12 +67,18 @@ final class LocationController extends AbstractController
     /**
      * Wyświetla szczegóły wybranej lokalizacji.
      *
-     * @param Location $location Wybrana lokalizacja
-     * @return Response Odpowiedź HTTP z widokiem szczegółów
+     * @param int $id Identyfikator lokalizacji
+     * @param LocationRepository $locationRepository Repozytorium lokalizacji
+     * @return Response
+     * @throws NotFoundHttpException Jeśli lokalizacja nie istnieje
      */
     #[Route('/{id}', name: 'app_location_show', methods: ['GET'])]
-    public function show(Location $location): Response
+    public function show(int $id, LocationRepository $locationRepository): Response
     {
+        $location = $locationRepository->find($id);
+        if (!$location) {
+            throw $this->createNotFoundException('Lokalizacja nie istnieje.');
+        }
         return $this->render('location/show.html.twig', [
             'location' => $location,
         ]);

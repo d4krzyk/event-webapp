@@ -65,12 +65,18 @@ final class ParticipationController extends AbstractController
     /**
      * Wyświetla szczegóły wybranego uczestnictwa.
      *
-     * @param Participation $participation Wybrane uczestnictwo
+     * @param int $id Identyfikator uczestnictwa
+     * @param ParticipationRepository $participationRepository Repozytorium uczestnictw
      * @return Response Odpowiedź HTTP z widokiem szczegółów
+     * @throws NotFoundHttpException Jeśli uczestnictwo nie istnieje
      */
     #[Route('/{id}', name: 'app_participation_show', methods: ['GET'])]
-    public function show(Participation $participation): Response
+    public function show(int $id, ParticipationRepository $participationRepository): Response
     {
+        $participation = $participationRepository->find($id);
+        if (!$participation) {
+            throw $this->createNotFoundException('Uczestnictwo nie istnieje.');
+        }
         return $this->render('participation/show.html.twig', [
             'participation' => $participation,
         ]);

@@ -8,6 +8,7 @@ Aplikacja do zarządzania wydarzeniami, napisana w PHP z wykorzystaniem framewor
 - PHP 8.1+ (jeśli chcesz uruchamiać lokalnie bez Dockera)
 - Composer
 - Node.js (jeśli chcesz korzystać z assetów frontendowych)
+- Symfony 6+ (zalecane: zainstalowany globalnie lub przez Composer)
 
 ## Konfiguracja środowiska
 
@@ -38,13 +39,19 @@ Aplikacja do zarządzania wydarzeniami, napisana w PHP z wykorzystaniem framewor
    ```
    - Baza danych PostgreSQL zostanie utworzona automatycznie.
 
-4. **Uruchom backend Symfony lokalnie:**
+4. **Zainstaluj zależności PHP (Composer):**
+   ```bash
+   composer install
+   ```
+   To polecenie pobierze wszystkie wymagane paczki do folderu `vendor`.
+
+5. **Uruchom backend Symfony lokalnie:**
    ```bash
    symfony server:start
    ```
    - Aplikacja będzie dostępna pod adresem: http://localhost:8000
 
-5. **Wykonaj migracje bazy danych:**
+6. **Wykonaj migracje bazy danych:**
    ```bash
    docker-compose exec php php bin/console doctrine:migrations:migrate
    ```

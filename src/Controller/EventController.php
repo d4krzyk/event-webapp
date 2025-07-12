@@ -74,12 +74,18 @@ final class EventController extends AbstractController
     /**
      * Wyświetla szczegóły wybranego wydarzenia.
      *
-     * @param Event $event
+     * @param int $id Identyfikator wydarzenia
+     * @param EventRepository $eventRepository Repozytorium wydarzeń
      * @return Response
+     * @throws NotFoundHttpException Jeśli wydarzenie nie istnieje
      */
     #[Route('/{id}', name: 'app_event_show', methods: ['GET'])]
-    public function show(Event $event): Response
+    public function show(int $id, EventRepository $eventRepository): Response
     {
+        $event = $eventRepository->find($id);
+        if (!$event) {
+            throw $this->createNotFoundException('Wydarzenie nie istnieje.');
+        }
         return $this->render('event/show.html.twig', [
             'event' => $event,
         ]);
