@@ -23,12 +23,12 @@ class UserRegistrationService
     /**
      * @var \Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface
      */
-    private $passwordHasher;
+    private UserPasswordHasherInterface $passwordHasher;
 
     /**
      * @var \App\Security\EmailVerifier
      */
-    private $emailVerifier;
+    private EmailVerifier $emailVerifier;
 
     /**
      * Konstruktor serwisu rejestracji użytkownika.
@@ -37,13 +37,17 @@ class UserRegistrationService
      * @param \Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface $passwordHasher
      * @param \App\Security\EmailVerifier $emailVerifier
      */
-    public function __construct(EntityManagerInterface $em, $passwordHasher, $emailVerifier)
+    public function __construct(
+        EntityManagerInterface $em,
+        UserPasswordHasherInterface $passwordHasher,
+        EmailVerifier $emailVerifier
+    )
     {
         $this->em = $em;
         $this->passwordHasher = $passwordHasher;
         $this->emailVerifier = $emailVerifier;
     }
-
+    
     /**
      * Rejestruje nowego użytkownika i ustawia hasło.
      *
